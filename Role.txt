@@ -1,0 +1,217 @@
+Role:
+You are a senior database architect designing a scalable Test Management System for embedded platforms.
+
+Task:
+Generate a top-to-bottom ER diagram (database schema visualization) with clearly defined entities, primary keys, foreign keys, and relationship cardinalities.
+
+Constraints:
+
+Test cases must never be duplicated
+
+Variants are allowed
+
+Same test case may be executed multiple times (trials)
+
+Each execution records step-level results
+
+Test execution is hardware, platform, and software version dependent
+
+Test cases may validate external specifications (Freeview, Freesat, DVB, etc.)
+
+Test plans and containers are logical groupings, not ownership
+
+Entities and Relationships (Top → Bottom)
+1. SPECIFICATION
+
+Represents standards or compliance rules.
+
+spec_id (PK)
+
+spec_code (FREEVIEW, FREESAT, DVB)
+
+spec_name
+
+description
+
+Relationship:
+
+SPECIFICATION ⇄ TEST_CASE (Many-to-Many)
+
+2. FEATURE
+
+Represents functional requirements (FRID).
+
+feature_id (PK)
+
+feature_code (FRID)
+
+feature_name
+
+description
+
+Relationship:
+
+FEATURE → TEST_CASE (One-to-Many)
+
+3. TEST_CASE
+
+Canonical test definition (never duplicated).
+
+test_case_id (PK)
+
+feature_id (FK)
+
+title
+
+base_steps
+
+base_expected
+
+Relationships:
+
+TEST_CASE ⇄ SPECIFICATION (Many-to-Many)
+
+TEST_CASE → TEST_CASE_VARIANT (One-to-Many)
+
+TEST_CASE → TEST_STEP (One-to-Many)
+
+4. TEST_CASE_VARIANT
+
+Contextual variation of a test case.
+
+variant_id (PK)
+
+test_case_id (FK)
+
+variant_name
+
+description
+
+Relationships:
+
+VARIANT → TEST_TRIAL (One-to-Many)
+
+5. TEST_STEP
+
+Logical test steps (defined once).
+
+step_id (PK)
+
+test_case_id (FK)
+
+step_no
+
+step_description
+
+expected_result
+
+6. TEST_PLAN
+
+Logical execution plan.
+
+test_plan_id (PK)
+
+plan_name
+
+version
+
+description
+
+Relationship:
+
+TEST_PLAN ⇄ TEST_CASE_CONTAINER (Many-to-Many)
+
+7. TEST_CASE_CONTAINER
+
+Logical grouping of test cases/variants.
+
+container_id (PK)
+
+container_name
+
+description
+
+Relationship:
+
+CONTAINER ⇄ TEST_CASE_VARIANT (Many-to-Many)
+
+8. TEST_TRIAL
+
+Represents one execution attempt.
+
+trial_id (PK)
+
+test_plan_id (FK)
+
+variant_id (FK)
+
+execution_target_id (FK)
+
+platform_id (FK)
+
+software_version_id (FK)
+
+executed_at
+
+executed_by
+
+overall_result
+
+9. TEST_STEP_RESULT
+
+Step-level execution results.
+
+step_result_id (PK)
+
+trial_id (FK)
+
+step_id (FK)
+
+actual_result
+
+status (PASS/FAIL)
+
+logs
+
+timestamp
+
+10. EXECUTION CONTEXT ENTITIES
+
+EXECUTION_TARGET
+
+target_id (PK)
+
+target_name
+
+target_type
+
+PLATFORM
+
+platform_id (PK)
+
+platform_name
+
+SOFTWARE_VERSION
+
+software_version_id (PK)
+
+version_name
+
+build_number
+
+release_date
+
+Visualization Instructions
+
+Draw entities top-to-bottom
+
+Show PK/FK explicitly
+
+Use crow’s foot notation for cardinality
+
+Highlight logical vs physical entities
+
+Ensure no circular ownership
+
+Output:
+A clean, professional ER diagram suitable for architecture review and implementation.
