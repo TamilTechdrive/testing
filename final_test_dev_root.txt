@@ -1,0 +1,135 @@
+Act as senior embedded web developer.
+
+Build OND (Over Network Download) STB firmware redirection + reporting system.
+
+STACK:
+Frontend: React + Tailwind CSS
+Backend: PHP 8.1 native API (NO frameworks)
+Database: PostgreSQL (pg_query, pg_query_params)
+Charts: Chart.js
+XLS: PhpSpreadsheet
+Server: Ubuntu 22.04 Apache
+Architecture: React SPA + PHP MVC API
+
+CORE FLOW:
+STB sends AES-128-CBC encrypted GET request to PHP API.
+Decrypt -> parse device info -> check MAC whitelist.
+If allowed redirect BIN firmware URL.
+Else return HTTP 404.
+Store all requests + logs.
+
+Encryption:
+IV=0123456789abcdef
+KEY=0123456789abcdef
+
+BACKEND STRUCTURE:
+public/api/
+controllers/
+models/
+services/
+helpers/
+middleware/
+config/
+storage/logs/
+storage/uploads/
+vendor/
+
+FRONTEND STRUCTURE:
+src/pages/
+src/components/
+src/layouts/
+src/services/api.js
+src/hooks/
+src/assets/
+
+MODULES:
+STB API endpoint (PHP)
+Dashboard (React)
+Reports (React)
+MAC Whitelist (React)
+Login + Role system
+User Management
+About Page
+Request Info Page
+
+AES SERVICE:
+base64 decode
+openssl decrypt
+parse querystring
+error handling
+logging
+
+STB API CONTROLLER:
+receive encrypted GET
+decrypt
+read mac,serial,app,loader,build
+check whitelist
+redirect BIN or return 404
+write log file
+store DB record
+save redirect status
+
+DATABASE TABLES:
+users
+mac_whitelist
+stb_requests
+login_audit
+firmware_redirect_logs
+timestamps,indexes,unique mac
+
+REACT DASHBOARD:
+tailwind admin layout
+sidebar + navbar
+cards:
+total requests
+success redirects
+blocked requests
+unique mac
+downloads
+charts + filters
+
+MAC XLS IMPORT:
+upload excel via React
+send to PHP API
+validate mac
+detect duplicate
+insert pg_query_params
+return summary
+
+XLS EXPORT:
+export whitelist
+export request reports via API
+
+LOGIN SYSTEM:
+admin,user roles
+password_hash
+JWT or session auth
+role middleware
+login audit
+logout
+
+REPORT MODULE:
+filters date,mac,app,status
+columns mac,serial,app,loader,build,url,status,time
+pagination
+search
+export XLS
+
+UI:
+React Tailwind admin panel
+responsive layout
+sidebar navigation
+top header
+login page
+dashboard page
+about page
+request info page
+reusable layout components
+
+OUTPUT:
+production ready PHP API
+clean React structure
+secure validation
+modular services
+logging enabled
+embedded STB ready
