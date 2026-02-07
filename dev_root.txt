@@ -1,0 +1,161 @@
+Act as a senior embedded web developer.
+
+Build a complete OND (Over Network Download) Information System for STB firmware redirection and reporting.
+
+STACK:
+- PHP 8.1 native (NO frameworks)
+- PostgreSQL (pg_query, pg_query_params)
+- Bootstrap 5 UI
+- Chart.js + DataTables
+- PhpSpreadsheet XLS import/export
+- Ubuntu 22.04 Apache
+- Clean MVC structure
+
+================================================
+CORE FUNCTION
+================================================
+STB sends AES-128-CBC encrypted GET request.
+Decrypt -> read device data -> check MAC whitelist.
+If allowed -> redirect BIN firmware URL.
+If not -> return HTTP 404.
+Store all requests + logs.
+
+Encryption:
+IV = 0123456789abcdef
+KEY = 0123456789abcdef
+
+================================================
+FOLDER STRUCTURE
+================================================
+Create MVC structure:
+
+public/
+controllers/
+models/
+services/
+helpers/
+middleware/
+config/
+storage/logs/
+storage/uploads/
+assets/
+vendor/
+
+Modules:
+- STB API
+- Dashboard
+- Reports
+- MAC Whitelist
+- Login + User Management
+- About Page
+- Request Info Page
+
+================================================
+AES SERVICE
+================================================
+Create AES-128-CBC decrypt service:
+- base64 decode
+- openssl decrypt
+- parse querystring
+- error handling
+- logging
+
+================================================
+STB API CONTROLLER
+================================================
+Flow:
+1. receive encrypted GET
+2. decrypt
+3. parse:
+   mac, serial, app version, loader version, build version
+4. check whitelist
+5. redirect BIN or return 404
+6. log request file
+7. store DB record
+8. record redirect status
+
+================================================
+DATABASE TABLES
+================================================
+users
+mac_whitelist
+stb_requests
+login_audit
+firmware_redirect_logs
+
+Include:
+indexes, timestamps, constraints, unique MAC.
+
+================================================
+DASHBOARD UI
+================================================
+Widgets:
+- total requests
+- success redirects
+- blocked requests
+- unique MAC
+- downloads
+
+Include charts + filters + responsive layout.
+
+================================================
+MAC XLS IMPORT
+================================================
+PhpSpreadsheet module:
+- upload file
+- validate MAC
+- detect duplicates
+- insert using pg_query_params
+- summary result
+
+================================================
+XLS EXPORT
+================================================
+Export:
+- whitelist
+- request reports
+Include headers + filters.
+
+================================================
+LOGIN SYSTEM
+================================================
+Roles:
+admin, user
+
+Features:
+- password_hash
+- password_verify
+- session auth
+- role middleware
+- login audit
+- logout
+
+================================================
+REPORT MODULE
+================================================
+Filters:
+date, mac, app version, redirect status
+
+Columns:
+mac, serial, app, loader, build,
+redirect url, status, timestamp
+
+Include pagination + search + export.
+
+================================================
+UI THEME
+================================================
+Bootstrap 5 admin theme:
+sidebar, navbar, login screen,
+dashboard, about page,
+request info page.
+
+================================================
+OUTPUT
+================================================
+Provide:
+- production ready MVC code
+- secure validation
+- reusable helpers
+- logging
+- clean modular structure
